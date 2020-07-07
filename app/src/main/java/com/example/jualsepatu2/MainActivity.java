@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jualsepatu2.Adapter.HomeAdaptor;
 import com.example.jualsepatu2.Fragment.AddSepatuFragment;
 import com.example.jualsepatu2.Fragment.HomeFragment;
 import com.example.jualsepatu2.Fragment.ProfileFragment;
@@ -26,6 +27,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeAdaptor.dataListener {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -53,13 +55,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<Pembeli> daftarPembeliList;
 
     private List<Penjual> daftarPenjualList;
-    private ArrayList<Sepatu> daftarSepatu;
 
+    private String emailCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //        hooks Drawer
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -75,11 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         menu.findItem(R.id.nav_add_sepatu).setVisible(false);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-        }
-
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -88,21 +86,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         menu.findItem(R.id.nav_add_sepatu).setVisible(true);
 
+
         providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.PhoneBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build()
         );
 
+        View headerView = navigationView.getHeaderView(0);
+        tvEmail = (TextView) headerView.findViewById(R.id.textViewEmail);
 
         showSignInOptions();
+
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(emailCurrent)).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(emailCurrent)).commit();
                 break;
             case R.id.nav_profil:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
@@ -117,10 +125,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onComplete(@NonNull Task<Void> task) {
                         Menu menu = navigationView.getMenu();
                         menu.findItem(R.id.nav_logOut).setVisible(false);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(emailCurrent)).commit();
                         navigationView.setCheckedItem(R.id.nav_home);
-                        showSignInOptions();
                         FirebaseAuth.getInstance().signOut();
+                        showSignInOptions();
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -155,12 +164,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                final Menu menu = navigationView.getMenu();
-                menu.findItem(R.id.nav_logOut).setVisible(true);
-
-                View headerView = navigationView.getHeaderView(0);
-                tvEmail = (TextView) headerView.findViewById(R.id.textViewEmail);
                 tvEmail.setText(user.getEmail());
+
+                emailCurrent = user.getEmail();
+
+                final Menu menu = navigationView.getMenu();
+                navigationView.setCheckedItem(R.id.nav_home);
+                menu.findItem(R.id.nav_logOut).setVisible(true);
 
                 Toast.makeText(this, "" + user.getEmail(), Toast.LENGTH_SHORT).show();
 
@@ -213,6 +223,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         System.out.println(databaseError.getDetails() + "" + databaseError.getMessage());
                     }
                 });
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(emailCurrent)).commit();
+                navigationView.setCheckedItem(R.id.nav_home);
 
 
             } else {
@@ -226,6 +238,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mReference.child("Pembeli").child(uid).setValue(pembeli);
 
+    }
+
+    public void onDeleteData(Sepatu sepatu) {
+
+        if (mReference != null) {
+            mReference.child("Sepatu").child(sepatu.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(MainActivity.this, "Data berhasil di hapus", Toast.LENGTH_LONG).show();
+
+                }
+            });
+        }
     }
 
 }

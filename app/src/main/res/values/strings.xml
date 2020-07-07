@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">JualSepatu V2</string>
     <string name="drawer_header">Drawer Header</string>
-    <string name="vyaninsya_gmail_com">vyaninsya@gmail.com</string>
+    <string name="vyaninsya_gmail_com"> </string>
     <string name="jual_sepatu">Jual Sepatu</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

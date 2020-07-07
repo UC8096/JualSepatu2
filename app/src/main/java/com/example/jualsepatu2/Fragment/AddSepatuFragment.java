@@ -167,6 +167,16 @@ public class AddSepatuFragment extends Fragment {
                     EtypeSepatu.setText("");
                     EphoneSepatu.setText("");
                     size.clear();
+
+                    u42.setSelected(false);
+                    u42.setChecked(false);
+                    u43.setSelected(false);
+                    u43.setChecked(false);
+                    u44.setSelected(false);
+                    u44.setChecked(false);
+                    u45.setSelected(false);
+                    u45.setChecked(false);
+
                 }
             }
         });

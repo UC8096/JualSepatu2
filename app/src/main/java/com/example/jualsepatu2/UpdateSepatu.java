@@ -179,6 +179,16 @@ public class UpdateSepatu extends AppCompatActivity {
                 EtypeSepatu.setText("");
                 EphoneSepatu.setText("");
                 size.clear();
+
+                u42up.setSelected(false);
+                u42up.setChecked(false);
+                u43up.setSelected(false);
+                u43up.setChecked(false);
+                u44up.setSelected(false);
+                u44up.setChecked(false);
+                u45up.setSelected(false);
+                u45up.setChecked(false);
+
                 Toast.makeText(UpdateSepatu.this, "Data Berhasil di Update", Toast.LENGTH_LONG).show();
             }
         });

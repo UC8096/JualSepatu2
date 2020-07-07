@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.jualsepatu2.Fragment.HomeFragment;
+import com.example.jualsepatu2.MainActivity;
 import com.example.jualsepatu2.Model.Sepatu;
 import com.example.jualsepatu2.R;
 import com.example.jualsepatu2.UpdateSepatu;
@@ -25,15 +27,21 @@ import java.util.ArrayList;
 
 public class HomeAdaptor extends RecyclerView.Adapter<HomeAdaptor.ViewHolder> {
     private ArrayList<Sepatu> daftarSepatus;
-
     private Context context;
+    private dataListener listener;
+    private String email;
 
-    public HomeAdaptor(ArrayList<Sepatu> dafSepatus, Context ctx) {
+    public HomeAdaptor(ArrayList<Sepatu> dafSepatus, Context ctx, String email) {
         this.daftarSepatus = dafSepatus;
-
         this.context = ctx;
-
+        this.listener = (MainActivity) ctx;
+        this.email = email;
     }
+
+    public interface dataListener {
+        void onDeleteData(Sepatu sepatu);
+    }
+
 
     @NonNull
     @Override
@@ -88,13 +96,15 @@ public class HomeAdaptor extends RecyclerView.Adapter<HomeAdaptor.ViewHolder> {
                                 break;
                             case 1:
                                 Toast.makeText(v.getContext(), "Delete", Toast.LENGTH_SHORT).show();
+
+                                listener.onDeleteData(daftarSepatus.get(position));
                                 break;
 
                         }
                     }
                 });
 
-                if (user.getEmail().equals(emailPenjualSepatu)) {
+                if (email.equals(emailPenjualSepatu)) {
                     aleBuilder.create();
                     aleBuilder.show();
                 }

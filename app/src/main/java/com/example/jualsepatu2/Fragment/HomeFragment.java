@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.jualsepatu2.Adapter.HomeAdaptor;
+import com.example.jualsepatu2.MainActivity;
 import com.example.jualsepatu2.Model.Sepatu;
 import com.example.jualsepatu2.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,9 +35,10 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
 
     private ArrayList<Sepatu> daftarSepatu;
+    private String email;
 
-    public HomeFragment() {
-
+    public HomeFragment(String email) {
+        this.email = email;
     }
 
     @Nullable
@@ -63,7 +67,7 @@ public class HomeFragment extends Fragment {
                     daftarSepatu.add(sepatu);
                 }
 
-                adapter = new HomeAdaptor(daftarSepatu, getContext());
+                adapter = new HomeAdaptor(daftarSepatu, getContext(), email);
                 rvView.setAdapter(adapter);
 
 
