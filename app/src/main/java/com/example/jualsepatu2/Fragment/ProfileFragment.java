@@ -128,13 +128,7 @@ public class ProfileFragment extends Fragment {
 
         mReference.child("Penjual").child(uid).setValue(pembeli);
 
-        if (mReference != null) {
-            mReference.child("Pembeli").child(uid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Toast.makeText(getContext(), "Anda berhasil Menjadi Penjual", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
+        Toast.makeText(getContext(), "Anda berhasil Menjadi Penjual", Toast.LENGTH_LONG).show();
+
     }
 }
