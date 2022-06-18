@@ -1,5 +1,6 @@
 package com.example.jualsepatu2.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -52,7 +53,7 @@ public class HomeAdaptor extends RecyclerView.Adapter<HomeAdaptor.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final HomeAdaptor.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final HomeAdaptor.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final String emailPenjualSepatu = daftarSepatus.get(position).getEmailPenjual();
         String namaSepatu = daftarSepatus.get(position).getName();
         String brandSepatu = daftarSepatus.get(position).getBrand();

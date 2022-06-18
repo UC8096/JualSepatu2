@@ -52,6 +52,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:hint="@string/type_sepatu"
                 android:paddingBottom="20px"
                 app:boxCornerRadiusTopEnd="30px"
@@ -77,6 +78,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ETPhoneSepatu"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
