@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build()
         );
 
